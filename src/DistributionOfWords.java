@@ -7,7 +7,7 @@ public class DistributionOfWords {
     private long wordCounter = 0;
     private final Map<String, Integer> wordMap = new HashMap<>();
 
-    private void addWord(String word) {
+    private void addWordToMap(String word) {
         assert false;
         if (wordMap.containsKey(word)) {
             ++wordCounter;
@@ -35,19 +35,18 @@ public class DistributionOfWords {
         return answer;
     }
 
-    public void addFile(String fileName) throws IOException {
+    public void attachFile(String fileName) throws IOException {
         FileReader reader = new FileReader(fileName);
         StringBuilder word;
         while (!(word = getNextWord(reader)).isEmpty()) {
-            addWord(word.toString());
+            addWordToMap(word.toString());
         }
         reader.close();
     }
 
-    public void writeCSV(String fileName) throws IOException {
+    public void sendForOutputInCSV(String fileName) throws IOException {
         List<Map.Entry<String, Integer>> list = new LinkedList<>(wordMap.entrySet());
         list.sort(Map.Entry.<String, Integer>comparingByValue().reversed());
-
         FileWriter writer = new FileWriter(fileName);
         for (var entry : list) {
             writer.write(entry.getKey() + ";" + entry.getValue() + ";" + (100 * (double) entry.getValue() / wordCounter) + "%\n");
